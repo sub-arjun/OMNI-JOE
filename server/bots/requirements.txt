@@ -1,2 +1,2 @@
 aiohttp
-git+https://github.com/pipecat-ai/pipecat.git#egg=pipecat-ai[daily,google,openai,silero,websocket]
+pipecat-ai[daily,google,openai,silero,websocket]==0.50.0
