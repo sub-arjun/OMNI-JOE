@@ -23,9 +23,11 @@ For realtime apps in production, WebRTC is the right choice. WebRTC was designed
 
 #### Server setup:
 
+You'll need to use Python version 3.10, 3.11, or 3.12 because of various dependencies. On a Mac, the easiest thing to do is `brew install python@3.12`.
+
 ```bash
 cd server
-python 3.12 -m venv venv
+python3.12 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
@@ -35,12 +37,21 @@ python sesame.py init
 # Run the server
 python sesame.py run
 ```
+This will start the Sesame server. You'll need to make note of which port it's running on. Look for a log line that says something like `Uvicorn running on http://127.0.0.1:7860 (Press CTRL+C to quit)`.
 
 #### Client setup:
 
-- Open a new terminal and `cd client`
-- Copy `env.example` to `.env.local` and check that the server URL matches the [#server-setup](server)
-- Run `npm install` and then `npm run dev`
+In a new terminal window:
+
+```bash
+cd client
+npm install
+cp env.example .env.local
+```
+
+Open your `.env.local` file and make sure `VITE_SERVER_URL=http://127.0.0.1:7860/api` is using the same port as your Sesame server (7860 in this case).
+
+Then, run `npm run dev` to start the client.
 
 ## Architecture
 
