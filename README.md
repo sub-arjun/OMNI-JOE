@@ -23,7 +23,7 @@ For realtime apps in production, WebRTC is the right choice. WebRTC was designed
 
 #### Server setup:
 
-You'll need to use Python 3.12 because of some dependencies. On a Mac, the easiest way to get it is to `brew install python@3.12`.
+You'll need to use Python version 3.10, 3.11, or 3.12 because of various dependencies. On a Mac, the easiest thing to do is `brew install python@3.12`.
 
 ```bash
 cd server
