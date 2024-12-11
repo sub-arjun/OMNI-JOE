@@ -5,10 +5,11 @@ This repo is a starter kit showing how to build a full application using the Pip
 <img width="500px" height="auto" src="./image.png">
 
 **Features:**
-  - Ephemeral WebSocket voice mode
-  - Text and image HTTP chat mode
-  - WebRTC voice, camera, and screenshare chat mode
-  - Persistent conversation storage to a SQLite database
+
+- Ephemeral WebSocket voice mode
+- Text and image HTTP chat mode
+- WebRTC voice, camera, and screenshare chat mode
+- Persistent conversation storage to a SQLite database
 
 The Pipecat SDK supports both WebSockets and WebRTC. WebSockets are great for protoyping, and for server-to-server communication.
 
@@ -20,8 +21,8 @@ For realtime apps in production, WebRTC is the right choice. WebRTC was designed
 
 ➡️ To use the WebRTC voice mode, you'll also need a [Daily API key](https://dashboard.daily.co/u/signup) (optional).
 
-
 #### Server setup:
+
 ```bash
 cd server
 python 3.12 -m venv venv
@@ -36,8 +37,9 @@ python sesame.py run
 ```
 
 #### Client setup:
+
 - Open a new terminal and `cd client`
-- Copy `env.example` to `.env.local`  and check that the server URL is correct
+- Copy `env.example` to `.env.local` and check that the server URL matches the [#server-setup](server)
 - Run `npm install` and then `npm run dev`
 
 ## Architecture
@@ -59,8 +61,9 @@ The app backend is a FastAPI app.
 API endpoints are defined in [webapp/api](webapp/api).
 
 The SDK uses these two endpoints in [webapp/api/bots.py](webapp/api/bots.py) to send an HTTP chat message, and to connect to a WebRTC voice-mode bot:
-  - /action
-  - /connect
+
+- /action
+- /connect
 
 The two bot modes are designed to be compatible with each other. Both are implemented as Pipecat pipelines using Gemini models.
 
@@ -73,15 +76,16 @@ The connected-mode WebRTC pipeline is defined in [`bots/webrtc/bot_pipeline.py`]
 RTVIClient is created in `client/src/components/ClientPage.tsx`.
 
 `client/src/components/ChatControls.tsx`
-  - `client.action()` is called from `sendTextMessage()` in `
-  - `client.connect()` is called from `handleSwitchToVoiceMode()` 
+
+- `client.action()` is called from `sendTextMessage()` in `
+- `client.connect()` is called from `handleSwitchToVoiceMode()`
 
 RTVI event handlers are set up by the `useRTVIClientEvent` hook. See:
-  - `client/src/components/BotReadyAudio.tsx`
-  - `client/src/components/ChatControls.tsx`
-  - `client/src/components/ChatMessages.tsx`
-  - `client/src/components/LiveMessages.tsx`
 
+- `client/src/components/BotReadyAudio.tsx`
+- `client/src/components/ChatControls.tsx`
+- `client/src/components/ChatMessages.tsx`
+- `client/src/components/LiveMessages.tsx`
 
 ### HTTP single-turn conversation
 
@@ -127,6 +131,7 @@ The payload is an Pipecat [RTVI](https://docs.pipecat.ai/client/introduction#abo
 Connected conversations start with a call to `client.connect()`. This starts a server-side Pipecat process and connects the bot and the client to a shared WebRTC session.
 
 The Pipecat Client SDK handles all of this on the client side. On the server side:
-  - /connect is defined in [server/webapp/api/bots.py](server/webapp/api/bots.py) 
-  - The bot process is started by `bot_launch()` in [server/bots/webrtc/bot.py](server/bots/webrtc/bot.py)
-  - The Pipecat pipeline is defined in [server/bots/webrtc/bot_pipeline.py](server/bots/webrtc/bot_pipeline.py)
+
+- /connect is defined in [server/webapp/api/bots.py](server/webapp/api/bots.py)
+- The bot process is started by `bot_launch()` in [server/bots/webrtc/bot.py](server/bots/webrtc/bot.py)
+- The Pipecat pipeline is defined in [server/bots/webrtc/bot_pipeline.py](server/bots/webrtc/bot_pipeline.py)
