@@ -1,0 +1,2 @@
+aiohttp
+git+https://github.com/pipecat-ai/pipecat.git#egg=pipecat-ai[daily,google,openai,silero,websocket]

@@ -1,0 +1,17 @@
+logs
+*.log
+.env
+env/
+.env.**
+venv
+.venv
+.idea
+.DS_Store
+__pycache__/
+.pytest_cache/
+.vscode/
+.vscode/**
+node_modules/
+wrangler.toml
+*.db
+/pipecat
