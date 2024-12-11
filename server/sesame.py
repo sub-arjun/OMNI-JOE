@@ -363,6 +363,50 @@ def run(
         raise typer.Exit(1)
 
 
+@app.command()
+def init_client():
+    """Initialize the client .env.local file with the correct server URL."""
+    # Check for parent directory containing client folder
+    client_dir = Path("../client")
+    env_local_file = client_dir / ".env.local"
+
+    if not client_dir.exists():
+        console.print("\n✗ Client directory not found at ../client", style="red bold")
+
+        # Ask if they want to specify a different path
+        if Confirm.ask("Would you like to specify the client directory path?"):
+            while True:
+                client_path = Prompt.ask("Enter the path to the client directory")
+                client_dir = Path(client_path)
+                if client_dir.exists():
+                    env_local_file = client_dir / ".env.local"
+                    break
+                console.print(f"\n✗ Directory not found: {client_path}", style="red")
+        else:
+            raise typer.Exit(1)
+
+    # Get port from env or use default
+    port = os.getenv("WEBAPP_PORT", "7860")
+    server_url = f"http://127.0.0.1:{port}/api"
+
+    # Show confirmation with details
+    console.print("\nClient .env.local configuration:", style="blue bold")
+    console.print(f"Directory: {client_dir.absolute()}", style="blue")
+    console.print(f"VITE_SERVER_URL: {server_url}", style="blue")
+
+    if not Confirm.ask("\nProceed with this configuration?"):
+        raise typer.Exit()
+
+    try:
+        # Create or update .env.local
+        env_local_file.write_text(f"VITE_SERVER_URL={server_url}\n")
+        console.print("\n✓ Successfully created .env.local file", style="green bold")
+
+    except Exception as e:
+        console.print(f"\n✗ Error creating .env.local file: {str(e)}", style="red bold")
+        raise typer.Exit(1)
+
+
 def main():
     app()
 
