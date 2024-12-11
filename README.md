@@ -22,46 +22,53 @@ For realtime apps in production, WebRTC is the right choice. WebRTC was designed
 
 
 #### Server setup:
-- `cd server`
-- `python 3.12 -m venv venv` & `source venv/bin/activate`
-- `pip install -r requirements.txt` 
-- Run `python sesame.py init` and follow the instructions
-- Run `python sesame.py run` and note the server URL
+```bash
+cd server
+python 3.12 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Initialize the project
+python sesame.py init
+
+# Run the server
+python sesame.py run
+```
 
 #### Client setup:
 - Open a new terminal and `cd client`
-- Cp `env.example` to `.env.local`  and check that the server URL is correct
+- Copy `env.example` to `.env.local`  and check that the server URL is correct
 - Run `npm install` and then `npm run dev`
 
-## architecture
+## Architecture
 
-### configuration
+### Configuration
 
-System instructions and other configuration parameters are in [server/common/config.py].
+System instructions and other configuration parameters are in [server/common/config.py](server/common/config.py).
 
-### storage
+### Storage
 
 In HTTP and WebRTC mode, conversations are stored in a local SQLite database file [server/sesame.db]. If you want to clear your conversation history, just delete this file. Everything is stored in plain text -- this is not meant to be secure or private storage!
 
-Storage is implemented by [bots/persistent_context.py]. The database schema is defined in [common/models.py].
+Storage is implemented by [bots/persistent_context.py](bots/persistent_context.py). The database schema is defined in [common/models.py](common/models.py).
 
-### server architecture
+### Server architecture
 
 The app backend is a FastAPI app.
 
-API endpoints are defined in [webapp/api].
+API endpoints are defined in [webapp/api](webapp/api).
 
-The SDK uses these two endpoints in [webapp/api/bots.py] to send an HTTP chat message, and to connect to a WebRTC voice-mode bot:
+The SDK uses these two endpoints in [webapp/api/bots.py](webapp/api/bots.py) to send an HTTP chat message, and to connect to a WebRTC voice-mode bot:
   - /action
   - /connect
 
 The two bot modes are designed to be compatible with each other. Both are implemented as Pipecat pipelines using Gemini models.
 
-The single-turn HTTP pipeline is defined in [`bots/http/bot_pipeline.py`].
+The single-turn HTTP pipeline is defined in [`bots/http/bot_pipeline.py`](bots/http/bot_pipeline.py).
 
-The connected-mode WebRTC pipeline is defined in [`bots/webrtc/bot_pipeline.py`].
+The connected-mode WebRTC pipeline is defined in [`bots/webrtc/bot_pipeline.py`](bots/webrtc/bot_pipeline.py).
 
-### client code
+### Client code
 
 RTVIClient is created in `client/src/components/ClientPage.tsx`.
 
@@ -120,6 +127,6 @@ The payload is an Pipecat [RTVI](https://docs.pipecat.ai/client/introduction#abo
 Connected conversations start with a call to `client.connect()`. This starts a server-side Pipecat process and connects the bot and the client to a shared WebRTC session.
 
 The Pipecat Client SDK handles all of this on the client side. On the server side:
-  - /connect is defined in [server/webapp/api/bots.py]
-  - The bot process is started by `bot_launch()` in [server/bots/webrtc/bot.py]
-  - The Pipecat pipeline is defined in [server/bots/webrtc/bot_pipeline.py]
+  - /connect is defined in [server/webapp/api/bots.py](server/webapp/api/bots.py) 
+  - The bot process is started by `bot_launch()` in [server/bots/webrtc/bot.py](server/bots/webrtc/bot.py)
+  - The Pipecat pipeline is defined in [server/bots/webrtc/bot_pipeline.py](server/bots/webrtc/bot_pipeline.py)
