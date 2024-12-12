@@ -105,10 +105,8 @@ The connected-mode WebRTC pipeline is defined in [`bots/webrtc/bot_pipeline.py`]
 
 RTVIClient is created in `client/src/components/ClientPage.tsx`.
 
-`client/src/components/ChatControls.tsx`
-
-- `client.action()` is called from `sendTextMessage()` in `
-- `client.connect()` is called from `handleSwitchToVoiceMode()`
+- `client.action()` is called from `sendTextMessage()` in `client/src/components/ChatControls.tsx`
+- `client.connect()` is called from `handleSwitchToVoiceMode()` in `client/src/components/ChatControls.tsx`
 
 RTVI event handlers are set up by the `useRTVIClientEvent` hook. See:
 
@@ -119,7 +117,7 @@ RTVI event handlers are set up by the `useRTVIClientEvent` hook. See:
 
 ### HTTP single-turn conversation
 
-Each HTTP conversation turn is triggered by a POST to [/api/bot/action].
+Each HTTP conversation turn is triggered by a POST to [/api/bot/action](server/webapp/api/bots.py).
 
 The payload is an Pipecat [RTVI](https://docs.pipecat.ai/client/introduction#about-rtvi) action to execute.
 
