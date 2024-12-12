@@ -21,7 +21,7 @@ For realtime apps in production, WebRTC is the right choice. WebRTC was designed
 
 ➡️ To use the WebRTC voice mode, you'll also need a [Daily API key](https://dashboard.daily.co/u/signup) (optional).
 
-#### Server setup:
+### Server setup:
 
 You'll need to use Python version 3.10, 3.11, or 3.12 because of various dependencies. On a Mac, the easiest thing to do is `brew install python@3.12`.
 
@@ -39,19 +39,38 @@ python sesame.py run
 ```
 This will start the Sesame server. You'll need to make note of which port it's running on. Look for a log line that says something like `Uvicorn running on http://127.0.0.1:7860 (Press CTRL+C to quit)`.
 
-#### Client setup:
+### Client setup:
+
+Option 1: Using the Sesame CLI
+
+- From within the `server` directory:
+
+  ```bash
+  python sesame.py init-client
+  ```
+
+Option 2: Manually
+
+- You can manually create the `.env.local` file in the `./client` directory:
+
+  ```bash
+  cd client
+  cp env.example .env.local
+  ```
+
+  Open your `.env.local` file and make sure `VITE_SERVER_URL=http://127.0.0.1:7860/api` is using the same port as your Sesame server (defaults to 7860).
+
+### Run the client:
 
 In a new terminal window:
 
 ```bash
 cd client
 npm install
-cp env.example .env.local
+npm run dev
 ```
 
-Open your `.env.local` file and make sure `VITE_SERVER_URL=http://127.0.0.1:7860/api` is using the same port as your Sesame server (7860 in this case).
-
-Then, run `npm run dev` to start the client.
+Visit the URL shown in the terminal. Be sure that both the server and client are running.
 
 ## Architecture
 
@@ -86,10 +105,8 @@ The connected-mode WebRTC pipeline is defined in [`bots/webrtc/bot_pipeline.py`]
 
 RTVIClient is created in `client/src/components/ClientPage.tsx`.
 
-`client/src/components/ChatControls.tsx`
-
-- `client.action()` is called from `sendTextMessage()` in `
-- `client.connect()` is called from `handleSwitchToVoiceMode()`
+- `client.action()` is called from `sendTextMessage()` in `client/src/components/ChatControls.tsx`
+- `client.connect()` is called from `handleSwitchToVoiceMode()` in `client/src/components/ChatControls.tsx`
 
 RTVI event handlers are set up by the `useRTVIClientEvent` hook. See:
 
@@ -100,7 +117,7 @@ RTVI event handlers are set up by the `useRTVIClientEvent` hook. See:
 
 ### HTTP single-turn conversation
 
-Each HTTP conversation turn is triggered by a POST to [/api/bot/action].
+Each HTTP conversation turn is triggered by a POST to [/api/bot/action](server/webapp/api/bots.py).
 
 The payload is an Pipecat [RTVI](https://docs.pipecat.ai/client/introduction#about-rtvi) action to execute.
 
