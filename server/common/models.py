@@ -38,11 +38,11 @@ class Conversation(Base):
     conversation_id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     title: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     archived = Column(Boolean, default=False)
-    created_at = Column(TIMESTAMP(timezone=True), server_default=func.datetime("now"))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     updated_at = Column(
         TIMESTAMP(timezone=True),
-        server_default=func.datetime("now"),
-        onupdate=func.datetime("now"),
+        server_default=func.current_timestamp(),
+        onupdate=func.current_timestamp(),
     )
 
     messages: Mapped[List["Message"]] = relationship("Message", back_populates="conversation")
@@ -69,11 +69,11 @@ class Message(Base):
     message_number = Column(Integer, nullable=False, server_default=None)
     content = Column(JSON, nullable=False)
     language_code = Column(String(20), default="english")
-    created_at = Column(TIMESTAMP(timezone=True), server_default=func.datetime("now"))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     updated_at = Column(
         TIMESTAMP(timezone=True),
-        server_default=func.datetime("now"),
-        onupdate=func.datetime("now"),
+        server_default=func.current_timestamp(),
+        onupdate=func.current_timestamp(),
     )
     extra_metadata = Column(JSON, nullable=True)
 
@@ -166,7 +166,7 @@ class Attachment(Base):
     )
     file_data = Column(String, nullable=False)
     file_type = Column(String(50), nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), server_default=func.datetime("now"))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
 
     message: Mapped["Message"] = relationship("Message", back_populates="attachments")
 
