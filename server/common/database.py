@@ -27,7 +27,6 @@ class DatabaseSessionFactory:
         db_url = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./sesame.db")
         self._engine = create_async_engine(
             db_url,
-            connect_args={"check_same_thread": False},
             pool_pre_ping=True,
             echo=bool(int(os.getenv("DATABASE_ECHO_OUTPUT", "0"))),
         )
